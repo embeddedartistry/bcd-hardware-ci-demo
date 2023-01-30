@@ -1,6 +1,6 @@
-# ly10-zephyr-fw
+# BCD Hardware CI Demo
 
-Zephyr-based firmware PLT Demo V2
+Zephyr-based firmware PLT Demo V2. This repository is used to demonstrate the use of Hardware CI using the BCD demo board and the PLT.
 
 - Build platform: macOS, Linux
 - Host platform: PLT Demo V2 (nRF52)
