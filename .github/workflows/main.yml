@@ -15,10 +15,9 @@ jobs:
     - name: PLTcloud
       uses: bcdevices/pltcloud-action@v1.1.3
       env:
-        FILES: ./dist/*
         API_TOKEN: ${{ secrets.API_TOKEN }}
         PROJECT_UUID: ${{ secrets.PROJECT_UUID }}
-        DEPLOYMENT_GROUP_UUID: ${{ secrets.DEPLOYMENT_GROUP_UUID }}'
+        DEPLOYMENT_GROUP_UUID: ${{ secrets.DEPLOYMENT_GROUP_UUID }}
         AUTO_DEPLOY: true
         VERSION: ${{ github.ref }}
     - name: Publish release
