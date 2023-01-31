@@ -12,6 +12,15 @@ jobs:
       run:  ./GIT-VERSION-GEN
     - name: build zepyhr
       uses: ./.github/actions/action-zephyr
+    - name: PLTcloud release
+      uses: bcdevices/pltcloud-action@v1.1.0
+      env:
+        FILES: ./dist/*
+        API_TOKEN: ${{ secrets.API_TOKEN }}
+        PROJECT_UUID: ${{ secrets.PROJECT_UUID }}
+        DEPLOYMENT_GROUP_UUID: ${{ secrets.DEPLOYMENT_GROUP_UUID }}'
+        AUTO_DEPLOY: true
+        VERSION: ${{ github.ref }}
     - name: PLTcloud
       uses: ./.github/actions/action-pltcloud
       if: contains(github.ref, 'tags')
