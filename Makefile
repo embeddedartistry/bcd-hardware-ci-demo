@@ -90,7 +90,7 @@ dist: dist-clean dist-prep build
 	install -m 666 build.blueclover_plt_demo_v2_nrf52832/app/zephyr/zephyr.hex dist/app-pltdemov2-$(VERSION_TAG).hex
 	install -m 666 build.blueclover_plt_demo_v2_nrf52832/app/zephyr/zephyr.elf dist/app-pltdemov2-$(VERSION_TAG).elf
 	install -m 666 build.blueclover_plt_demo_v2_nrf52832/app/zephyr/zephyr.map dist/app-pltdemov2-$(VERSION_TAG).map
-	install -m 666 build.blueclover_plt_demo_v2_nrf52832/shell/zephyr/zephyr.hex dist/shell-pltdemov2-$(VERSION_TAG).he
+	install -m 666 build.blueclover_plt_demo_v2_nrf52832/shell/zephyr/zephyr.hex dist/shell-pltdemov2-$(VERSION_TAG).hex
 	sed 's/{{BOARD}}/pltdemov2/g; s/{{VERSION}}/$(VERSION_TAG)/g' test-suites/suite-demo-board-zephyr.yaml.template > dist/suite-pltdemov2-board-zephyr-$(VERSION_TAG).yaml
 
 .PHONY: deploy
