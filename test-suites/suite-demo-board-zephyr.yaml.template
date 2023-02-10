@@ -1,26 +1,50 @@
-title: "Demo v{{VERSION}}"
+title: "Hardware CI Demo v{{VERSION}}"
 suite:
-- ident: ICT-T0
-  title: Power on
+- ident: Setup
   steps:
-  - command: power SWD on
-- ident: ICT-T1
-  title: Identify DUT
+  - command: power off
+  - command: uartCfg UART0 115200
+  - command: power 5V on
+- ident: "Program Shell Variant"
   steps:
   - command: identify nRF52
-- ident: ICT-T2
-  title: Erase nRF52
+  - command: program nRF52 shell-{{BOARD}}-{{VERSION}}.hex
+  - command: sleepms 1000
+- ident: "Reset MCU"
   steps:
-  - command: erase nRF52
-- ident: ICT-T3
-  title: Program PLTDemoV1 board FW
+  - command: pin SWD_NRST output low
+  - command: pin SWD_NRST output high
+- ident: Shell
   steps:
-  - command: program nRF52 app-{{BOARD}}-{{VERSION}}.hex
-- ident: ICT-T4
+  - uartcmd: uart UART0
+    send: "\r\nkernel version\r\n"
+    expect: "Zephyr version"
+    extract: "Zephyr version (.*)\r\n"
+  - uartcmd: uart UART0
+    send: "\r\nsensor get TEMP_0\r\n"
+    extract: "die_temp = (.*)\r\n"
+    extractKey: DIE_TEMP
+- ident: "BAT_CHGB GPIO"
+  # P0.28 (BAT_CHGB) is connected to DATP07
+  steps:
+  - uartcmd: uart UART0
+    send: "gpio conf GPIO_0 28 out\r\n"
+    expect: "Configuring GPIO_0 pin 28"
+  # Drive P0.28 low
+  - uartcmd: uart UART0
+    send: "gpio set GPIO_0 28 0\r\n"
+    expect: "Writing to GPIO_0 pin 28"
+  # Check if TP2 (BAT_CHGB) is low
+  - command: measure voltageDATP07 -10-600mV
+- ident: "BLE"
   title: BLE discovery
   steps:
   - command: bledis %BLEMAC% 5
-- ident: ICT-T5
+- ident: "Program App"
+  steps:
+  - command: program nRF52 app-{{BOARD}}-{{VERSION}}.hex
+- ident: "Power Off"
   title: Power off
   steps:
   - command: power off
+
