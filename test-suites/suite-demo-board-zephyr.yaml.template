@@ -26,8 +26,8 @@ suite:
     send: "\r\nsensor get TEMP_0\r\n"
     extract: "die_temp = (.*)\r\n"
     extractKey: DIE_TEMP_C
-  - command: eval "numeric(DIE_TEMP_C, 'C') > 0"
-  - command: eval "numeric(DIE_TEMP_C, 'C') < 40.0"
+  - command: eval "numeric(DIE_TEMP_C) > 0"
+  - command: eval "numeric(DIE_TEMP_C) < 40.0"
 - ident: "I2C0 Device Check"
   steps:
   - uartcmd: uart UART0
