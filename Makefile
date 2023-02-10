@@ -36,6 +36,19 @@ BOARDS_APP :=
 BOARDS_APP += blueclover_plt_demo_v2_nrf52832
 
 APP_TARGETS := $(patsubst %,build.%/app/zephyr/zephyr.hex,$(BOARDS_APP))
+SHELL_TARGETS := $(patsubst %,build.%/shell/zephyr/zephyr.hex,$(BOARDS_APP))
+
+build.%/shell/zephyr/zephyr.hex:
+	if [ -d $(ZEPHYR_USRROOT) ]; then source $(ZEPHYR_USRROOT)/zephyr-env.sh ; \
+	elif [ -d $(ZEPHYR_SYSROOT) ]; then source $(ZEPHYR_SYSROOT)/zephyr-env.sh ; \
+	else echo "No Zephyr"; fi && \
+          west build --build-dir build.$*/shell --pristine auto \
+	  --board $*  $$ZEPHYR_BASE/samples/subsys/shell/shell_module \
+	-DCONFIG_GPIO_SHELL=y \
+	-DCONFIG_SENSOR=y \
+	-DCONFIG_SHT3XD=y \
+	-DCONFIG_TEMP_NRF5=y \
+	-DCONFIG_I2C=y
 
 build.%/app/zephyr/zephyr.hex:
 	if [ -d $(ZEPHYR_USRROOT) ]; then source $(ZEPHYR_USRROOT)/zephyr-env.sh ; \
@@ -50,7 +63,7 @@ versions:
 	@echo "VERSION_TAG: $(VERSION_TAG)"
 
 .PHONY: build
-build: $(APP_TARGETS)
+build: $(APP_TARGETS) $(SHELL_TARGETS)
 
 .PHONY: clean
 clean:
@@ -77,6 +90,7 @@ dist: dist-clean dist-prep build
 	install -m 666 build.blueclover_plt_demo_v2_nrf52832/app/zephyr/zephyr.hex dist/app-pltdemov2-$(VERSION_TAG).hex
 	install -m 666 build.blueclover_plt_demo_v2_nrf52832/app/zephyr/zephyr.elf dist/app-pltdemov2-$(VERSION_TAG).elf
 	install -m 666 build.blueclover_plt_demo_v2_nrf52832/app/zephyr/zephyr.map dist/app-pltdemov2-$(VERSION_TAG).map
+	install -m 666 build.blueclover_plt_demo_v2_nrf52832/shell/zephyr/zephyr.hex dist/shell-pltdemov2-$(VERSION_TAG).he
 	sed 's/{{BOARD}}/pltdemov2/g; s/{{VERSION}}/$(VERSION_TAG)/g' test-suites/suite-demo-board-zephyr.yaml.template > dist/suite-pltdemov2-board-zephyr-$(VERSION_TAG).yaml
 
 .PHONY: deploy
