@@ -21,6 +21,7 @@ suite:
     expect: "Zephyr version"
     extract: "Zephyr version (.*)\r\n"
 - ident: "Temperature Sensor"
+  steps:
   - uartcmd: uart UART0
     send: "\r\nsensor get TEMP_0\r\n"
     extract: "die_temp = (.*)\r\n"
@@ -28,6 +29,7 @@ suite:
   - command: eval "numeric(DIE_TEMP_C, 'C') > 0"
   - command: eval "numeric(DIE_TEMP_C, 'C') < 40.0"
 - ident: "I2C0 Device Check"
+  steps:
   - uartcmd: uart UART0
     send: "\r\ni2c scan I2C0\r\n"
     extract: "(.*) devices found on I2C_0\r\n"
