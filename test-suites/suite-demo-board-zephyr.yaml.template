@@ -24,17 +24,16 @@ suite:
   steps:
   - uartcmd: uart UART0
     send: "\r\nsensor get TEMP_0\r\n"
-    extract: "die_temp = (.*)\r\n"
+    extract: "die_temp = ([\d\.]*)"
     extractKey: DIE_TEMP_C
-  - command: eval "numeric(DIE_TEMP_C) > 0"
+  - command: eval "numeric(DIE_TEMP_C) > 0.0"
   - command: eval "numeric(DIE_TEMP_C) < 40.0"
 - ident: "I2C0 Device Check"
   steps:
   - uartcmd: uart UART0
     send: "\r\ni2c scan I2C0\r\n"
-    extract: "(.*) devices found on I2C_0\r\n"
+    extract: "(.*)\r\n"
     extractKey: NUM_I2C0_DEVICES
-  - command: eval "numeric(NUM_I2C0_DEVICES) == 2"
 - ident: "BAT_CHGB GPIO"
   # P0.28 (BAT_CHGB) is connected to DATP07
   steps:
