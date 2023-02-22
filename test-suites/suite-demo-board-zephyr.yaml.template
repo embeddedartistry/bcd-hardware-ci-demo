@@ -16,10 +16,10 @@ suite:
   - command: pin SWD_NRST output high
 - ident: Version
   steps:
-  - uartcmd: uart UART0
-    send: "\r\nkernel version\r\n"
-    expect: "Zephyr version"
-    extract: "Zephyr version (.*)\r\n"
+    - uartcmd: uart UART0
+      send: "\r\nkernel version\r\n"
+      extract: "\r\n(.*) version (.*)\r\n"
+      extractKey: KERNEL_NAME KERNEL_VERSION
 - ident: "Temperature Sensor"
   steps:
   - uartcmd: uart UART0
