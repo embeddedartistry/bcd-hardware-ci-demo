@@ -28,17 +28,39 @@ suite:
     extractKey: DIE_TEMP_C
   - command: eval "numeric(DIE_TEMP_C) > 0.0"
   - command: eval "numeric(DIE_TEMP_C) < 40.0"
-- ident: "SHT3XD Sensor"
+- ident: "SHT3XD Temperature"
   steps:
   - uartcmd: uart UART0
     send: "\r\nsensor get SHT3XD 13\r\n"
     extract: "ambient_temp =  (.*)\r\n"
     extractKey: AMBIENT_TEMP
+  - command: eval "numeric(AMBIENT_TEMP) > 0.0"
+  - command: eval "numeric(AMBIENT_TEMP) < 40.0"
+- ident: "SHT3XD Humidity"
+  steps:
+  - uartcmd: uart UART0
+    send: "\r\nsensor get SHT3XD 16\r\n"
+    extract: "humidity =  (.*)\r\n"
+    extractKey: AMBIENT_HUMIDITY
+  - command: eval "numeric(AMBIENT_HUMIDITY) > 10.0"
+  - command: eval "numeric(AMBIENT_HUMIDITY) < 90.0"
+- ident: "Accelerometer"
+  steps:
+  - uartcmd: uart UART0
+    send: "\r\nsensor get BMI270 3\r\n"
+    extract: "accel_xyz x =  (.*) y =  (.*) z =  (.*)\r\n"
+    extractKey: ACCEL_X ACCEL_Y ACCEL_Z
+- ident: "Gyroscope"
+  steps:
+  - uartcmd: uart UART0
+    send: "\r\nsensor get BMI270 7\r\n"
+    extract: "gyro_xyz x =  (.*) y =  (.*) z =  (.*)\r\n"
+    extractKey: GYRO_X GYRO_Y GYRO_Z
 - ident: "I2C0 Device Check"
   steps:
   - uartcmd: uart UART0
-    send: "\r\ni2c scan I2C0\r\n"
-    extract: "(.*)\r\n"
+    send: "\r\ni2c scan I2C_0\r\n"
+    extract: "(.*) devices found on I2C_0\r\n"
     extractKey: NUM_I2C0_DEVICES
 - ident: "BAT_CHGB GPIO"
   # P0.28 (BAT_CHGB) is connected to DATP07
