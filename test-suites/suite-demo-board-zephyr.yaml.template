@@ -29,6 +29,7 @@ suite:
   - command: eval "numeric(DIE_TEMP_C) > 0.0"
   - command: eval "numeric(DIE_TEMP_C) < 40.0"
 - ident: "SHT3XD Sensor"
+  steps:
   - uartcmd: uart UART0
     send: "\r\nsensor get SHT3XD 13\r\n"
     extract: "ambient_temp =  (.*)\r\n"
