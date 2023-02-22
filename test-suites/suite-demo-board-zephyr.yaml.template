@@ -24,10 +24,15 @@ suite:
   steps:
   - uartcmd: uart UART0
     send: "\r\nsensor get TEMP_0\r\n"
-    extract: 'die_temp =\s*([\d\.]*)'
+    extract: "die_temp =  (.*)\r\n"
     extractKey: DIE_TEMP_C
   - command: eval "numeric(DIE_TEMP_C) > 0.0"
   - command: eval "numeric(DIE_TEMP_C) < 40.0"
+- ident: "SHT3XD Sensor"
+  - uartcmd: uart UART0
+    send: "\r\nsensor get SHT3XD 13\r\n"
+    extract: "ambient_temp =  (.*)\r\n"
+    extractKey: AMBIENT_TEMP
 - ident: "I2C0 Device Check"
   steps:
   - uartcmd: uart UART0
