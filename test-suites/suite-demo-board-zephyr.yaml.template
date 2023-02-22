@@ -48,14 +48,14 @@ suite:
   steps:
   - uartcmd: uart UART0
     send: "\r\nsensor get BMI270 3\r\n"
-    extract: "accel_xyz x =  (.*) y =  (.*) z =  (.*)\r\n"
-    extractKey: ACCEL_X ACCEL_Y ACCEL_Z
+    extract: "accel_xyz (.*)\r\n"
+    extractKey: ACCEL
 - ident: "Gyroscope"
   steps:
   - uartcmd: uart UART0
     send: "\r\nsensor get BMI270 7\r\n"
-    extract: "gyro_xyz x =  (.*) y =  (.*) z =  (.*)\r\n"
-    extractKey: GYRO_X GYRO_Y GYRO_Z
+    extract: "gyro_xyz (.*)\r\n"
+    extractKey: GYRO
 - ident: "I2C0 Device Check"
   steps:
   - uartcmd: uart UART0
